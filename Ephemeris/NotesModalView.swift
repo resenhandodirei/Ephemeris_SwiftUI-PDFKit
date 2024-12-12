@@ -66,17 +66,50 @@ struct ReadingViewWithNotes: View {
     @State private var isNotesModalPresented: Bool = false
     @State private var selectedText: String = ""
     @State private var notes: [String: String] = [:] // Dicionário de trecho -> nota
+    @State private var currentChapter: String = sampleBookContentImproved
 
     var body: some View {
         VStack {
+            // Área de leitura com trecho selecionável
             ScrollView {
-                Text(sampleBookContent)
+                Text(currentChapter)
                     .onTapGesture {
-                        selectedText = "Capítulo 1: Introdução ao Mundo Swift" // Exemplo de trecho
+                        // Simulando um trecho selecionado
+                        selectedText = "Capítulo 1: Introdução ao Mundo Swift"
                         isNotesModalPresented = true
                     }
                     .padding()
             }
+
+            // Botões para navegação ou finalizar a leitura
+            HStack {
+                Button(action: {
+                    // Lógica para avançar para o próximo capítulo
+                    currentChapter = "Capítulo 2: Fundamentos do Swift"
+                    selectedText = "Capítulo 2: Fundamentos do Swift"
+                }) {
+                    Text("Avançar Capítulo")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.darkBlue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+
+                Button(action: {
+                    // Lógica para finalizar a leitura
+                    currentChapter = "Leitura finalizada! Você terminou o livro."
+                    selectedText = "Fim da leitura"
+                }) {
+                    Text("Finalizar Leitura")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.nude)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            }
+            .padding()
 
             // Listagem de Notas
             List {
@@ -100,11 +133,20 @@ struct ReadingViewWithNotes: View {
             }
         }
         .navigationTitle("Leitura com Notas")
+        .navigationBarTitleDisplayMode(.inline)
+
+        .navigationBarItems(trailing: Button(action: {
+            // Ação do botão extra (mock)
+            print("Botão extra clicado!")
+        }) {
+            Image(systemName: "bookmark.fill")
+                .font(.title3)
+                .foregroundColor(.nude)
+        })
     }
 }
 
-// Conteúdo Mockado
-let sampleBookkContent = """
+let sampleBookContentImproved = """
 Capítulo 1: Introdução ao Mundo Swift
 
 Swift é uma linguagem de programação poderosa e intuitiva, desenvolvida pela Apple para criar aplicativos para iOS, macOS, watchOS e tvOS.
@@ -123,3 +165,4 @@ struct NotesModalView_Previews: PreviewProvider {
         }
     }
 }
+

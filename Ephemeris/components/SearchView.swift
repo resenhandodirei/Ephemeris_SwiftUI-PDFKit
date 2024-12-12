@@ -14,10 +14,10 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) { // Removendo qualquer espaçamento adicional
                 // Barra de Pesquisa
                 SearchBarView(searchQuery: $searchQuery)
-                    .padding(.horizontal)
+                    
 
                 // Sugestões de Livros
                 if searchQuery.isEmpty {
@@ -26,7 +26,7 @@ struct SearchView: View {
                         .padding()
                 } else if filteredBooks.isEmpty {
                     Text("Nenhum livro encontrado.")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.nude)
                         .padding()
                 } else {
                     List(filteredBooks) { book in
@@ -41,14 +41,13 @@ struct SearchView: View {
                                     .font(.headline)
                                 Text(book.author)
                                     .font(.subheadline)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.nude)
                             }
-                            Spacer()
                         }
                     }
+                    .listStyle(PlainListStyle())
                 }
             }
-            .navigationBarTitle("Pesquisar", displayMode: .inline)
             .onAppear {
                 filteredBooks = books
             }
@@ -83,21 +82,24 @@ struct SearchBarView: View {
                 .overlay(
                     HStack {
                         Spacer()
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.darkBlue)
                         if !searchQuery.isEmpty {
                             Button(action: { searchQuery = "" }) {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.darkBlue)
                                     .padding(.trailing, 8)
                             }
                         }
                     }
                 )
         }
+        .padding(.horizontal) // Ajustando o padding horizontal
     }
 }
 
 // Dados mockados
-struct SearchBook: Identifiable { // Renomeando para SearchBook
+struct SearchBook: Identifiable {
     let id = UUID()
     let title: String
     let author: String

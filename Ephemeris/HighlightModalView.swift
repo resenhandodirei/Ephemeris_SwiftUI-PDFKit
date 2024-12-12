@@ -36,7 +36,7 @@ struct HighlightModalView: View {
                             .frame(width: 40, height: 40)
                             .overlay(
                                 Circle()
-                                    .stroke(selectedColor == color.colorValue ? Color.blue : Color.clear, lineWidth: 3)
+                                    .stroke(selectedColor == color.colorValue ? Color.darkBlue : Color.clear, lineWidth: 3)
                             )
                             .onTapGesture {
                                 selectedColor = color.colorValue
@@ -63,14 +63,14 @@ struct HighlightModalView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
                         isPresented = false
-                    }
+                    }.foregroundColor(.darkBlue)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Salvar") {
                         let highlight = Highlight(text: selectedText, color: selectedColor, style: selectedStyle)
                         onSave(highlight)
                         isPresented = false
-                    }
+                    }.foregroundColor(.darkBlue)
                 }
             }
         }
@@ -150,7 +150,6 @@ Ela foi projetada para ser amigável aos desenvolvedores, promovendo produtivida
 
 ...
 
-(Fim do Livro)
 """
 
 struct HighlightModalView_Previews: PreviewProvider {

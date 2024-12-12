@@ -28,7 +28,7 @@ struct BookReviewView: View {
                                 HStack(spacing: 2) {
                                     ForEach(0..<5) { star in
                                         Image(systemName: star < review.rating ? "star.fill" : "star")
-                                            .foregroundColor(star < review.rating ? .yellow : .gray)
+                                            .foregroundColor(star < review.rating ? .darkBlue : .bege)
                                     }
                                 }
                             }
@@ -51,7 +51,7 @@ struct BookReviewView: View {
                     HStack {
                         ForEach(1...5, id: \.self) { star in
                             Image(systemName: star <= newRating ? "star.fill" : "star")
-                                .foregroundColor(star <= newRating ? .yellow : .gray)
+                                .foregroundColor(star <= newRating ? .darkBlue : .bege)
                                 .onTapGesture {
                                     newRating = star
                                 }
@@ -67,7 +67,7 @@ struct BookReviewView: View {
                         Text("Enviar Avaliação")
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(newRating > 0 && !newComment.isEmpty ? Color.blue : Color.gray)
+                            .background(newRating > 0 && !newComment.isEmpty ? Color.darkBlue : Color.bege)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -76,6 +76,7 @@ struct BookReviewView: View {
                 .padding()
             }
             .navigationTitle("Avaliações")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

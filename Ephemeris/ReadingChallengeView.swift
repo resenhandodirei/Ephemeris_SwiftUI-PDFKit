@@ -4,138 +4,100 @@
 //
 //  Created by Larissa Martins Correa on 25/11/24.
 //
+
 import SwiftUI
 
 struct ReadingChallengeView: View {
-    @State private var challenges: [Challenge] = [
-        Challenge(title: "Ler 5 Livros", progress: 3, goal: 5, reward: "Medalha de Bronze"),
-        Challenge(title: "Ler 100 Páginas em 7 Dias", progress: 100, goal: 100, reward: "Medalha de Prata"),
-        Challenge(title: "Ler 30 Minutos por Dia", progress: 15, goal: 30, reward: "Medalha de Ouro")
-    ]
-    
-    @State private var showReward: Bool = false
-    @State private var unlockedReward: String = ""
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                List {
-                    ForEach(challenges.indices, id: \.self) { index in
-                        ChallengeCardView(challenge: $challenges[index]) {
-                            unlockReward(for: challenges[index])
-                        }
-                    }
-                }
-                .listStyle(InsetGroupedListStyle())
-            }
-            .navigationTitle("Desafios de Leitura")
-            .overlay(
-                // Usando um Group para condicionalmente mostrar a view
-                Group {
-                    if showReward {
-                        RewardView(reward: unlockedReward, showReward: $showReward)
-                    }
-                }
-            )
-        }
-    }
-    
-    private func unlockReward(for challenge: Challenge) {
-        if challenge.progress >= challenge.goal {
-            unlockedReward = challenge.reward
-            showReward = true
-        }
-    }
-}
+    @State private var targetBooks: Int = 12 // Meta de livros
+    @State private var booksRead: Int = 5 // Livros já lidos
+    @State private var currentBook: String = "O Alquimista" // Livro atual
+    @State private var showMarkAsReadAlert = false
 
-struct ChallengeCardView: View {
-    @Binding var challenge: Challenge
-    var onUnlock: () -> Void
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(challenge.title)
-                .font(.headline)
-            
-            ProgressView(value: Double(challenge.progress), total: Double(challenge.goal))
-                .accentColor(challenge.progress >= challenge.goal ? .green : .blue)
-            
-            HStack {
-                Text("\(challenge.progress)/\(challenge.goal) concluídos")
-                    .font(.subheadline)
-                Spacer()
-                Button(action: {
-                    if challenge.progress >= challenge.goal {
-                        onUnlock()
-                    }
-                }) {
-                    Text(challenge.progress >= challenge.goal ? "Desbloquear" : "Progresso")
-                        .padding(8)
-                        .background(challenge.progress >= challenge.goal ? Color.green : Color.gray.opacity(0.3))
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .disabled(challenge.progress < challenge.goal)
-            }
-        }
-        .padding()
-        .background(Color(UIColor.secondarySystemBackground))
-        .cornerRadius(10)
-        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
-    }
-}
-
-struct RewardView: View {
-    let reward: String
-    @Binding var showReward: Bool
-    
     var body: some View {
         VStack(spacing: 20) {
-            Text("Recompensa Desbloqueada!")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text(reward)
-                .font(.headline)
+
+            ProgressView(value: Double(booksRead), total: Double(targetBooks))
+                .progressViewStyle(LinearProgressViewStyle(tint: .brown))
                 .padding()
-                .background(Color.yellow)
-                .cornerRadius(10)
-                .shadow(radius: 10)
-            
-            Button(action: {
-                showReward = false
-            }) {
-                Text("Fechar")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                .frame(height: 20)
+
+            Text("\(booksRead) de \(targetBooks) livros lidos")
+                .font(.headline)
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Livro Atual:")
+                    .font(.headline)
+                
+                Text(currentBook)
+                    .font(.title3)
+                    .italic()
+                    .foregroundColor(.brown)
+
+                Button(action: {
+                    showMarkAsReadAlert = true
+                }) {
+                    Text("Marcar como Lido")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.darkBlue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .alert(isPresented: $showMarkAsReadAlert) {
+                    Alert(
+                        title: Text("Confirmar"),
+                        message: Text("Deseja marcar \(currentBook) como lido?"),
+                        primaryButton: .default(Text("Sim")) {
+                            booksRead += 1
+                            currentBook = "Próximo Livro..." // Alterar para um próximo livro real
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
+            .padding()
+            .background(Color.nude.opacity(0.5))
+            .cornerRadius(10)
+
+            Spacer()
+
+            // Botão para ajustar a meta
+            HStack {
+                Button(action: {
+                    if targetBooks > 1 {
+                        targetBooks -= 1
+                    }
+                }) {
+                    Image(systemName: "minus.circle")
+                        .font(.title)
+                        .foregroundColor(.bege)
+                }
+
+                Text("Meta: \(targetBooks) livros")
+                    .font(.headline)
+
+                Button(action: {
+                    targetBooks += 1
+                }) {
+                    Image(systemName: "plus.circle")
+                        .font(.title)
+                        .foregroundColor(.darkBlue)
+                }
+            }
+
+            Spacer()
         }
         .padding()
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(radius: 20)
-        .frame(maxWidth: 300)
-        .frame(height: 300)
-        .overlay(
-            Color.black.opacity(0.5)
-                .ignoresSafeArea()
-        )
+        .navigationTitle("Desafio de Leitura")
+        .navigationBarTitleDisplayMode(.inline)
     }
-}
-
-struct Challenge: Identifiable {
-    let id = UUID()
-    var title: String
-    var progress: Int
-    var goal: Int
-    var reward: String
 }
 
 struct ReadingChallengeView_Previews: PreviewProvider {
     static var previews: some View {
-        ReadingChallengeView()
+        NavigationView {
+            ReadingChallengeView()
+        }
     }
 }
+

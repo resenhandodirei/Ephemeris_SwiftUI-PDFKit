@@ -45,7 +45,7 @@ struct ReadingStatisticsView: View {
                                     x: .value("Semana", stat.date),
                                     y: .value("Páginas Lidas", stat.pages)
                                 )
-                                .foregroundStyle(Color.blue.gradient)
+                                .foregroundStyle(Color.darkBlue.gradient)
                             }
                         }
                         .frame(height: 200)
@@ -66,7 +66,7 @@ struct ReadingStatisticsView: View {
                                     y: .value("Livros", stat.books)
                                 )
                                 .symbol(.circle)
-                                .foregroundStyle(Color.green.gradient)
+                                .foregroundStyle(Color.brown.gradient)
                             }
                         }
                         .frame(height: 200)
@@ -76,6 +76,7 @@ struct ReadingStatisticsView: View {
                     Spacer()
                 }
                 .navigationTitle("Estatísticas")
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

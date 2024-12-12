@@ -36,7 +36,7 @@ struct SplashView: View {
                     .foregroundColor(.nude)
                     .opacity(logoOpacity)
                     .onAppear {
-                        withAnimation(.easeIn(duration: 5.5).delay(2.0)) {
+                        withAnimation(.easeIn(duration: 500.5).delay(20.0)) {
                             self.logoOpacity = 6.0
                         }
                     }

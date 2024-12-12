@@ -26,7 +26,7 @@ struct ForumView: View {
                             HStack {
                                 Text(post.author)
                                     .font(.headline)
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(.brown)
                                 Spacer()
                                 Text("\(post.likes) ❤️")
                                     .font(.subheadline)
@@ -72,7 +72,7 @@ struct ForumView: View {
                         Text("Postar")
                             .padding(.horizontal)
                             .padding(.vertical, 8)
-                            .background(Color.blue)
+                            .background(Color.darkBlue)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
@@ -81,6 +81,7 @@ struct ForumView: View {
                 .padding()
             }
             .navigationTitle("Fórum de Discussões")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

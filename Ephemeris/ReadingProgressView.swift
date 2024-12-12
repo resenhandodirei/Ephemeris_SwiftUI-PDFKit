@@ -34,7 +34,7 @@ struct ReadingProgressView: View {
                     .font(.headline)
 
                 ProgressView(value: Double(pagesRead), total: Double(totalPages))
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .progressViewStyle(CircularProgressViewStyle(tint: .darkBlue))
                     .frame(width: 150, height: 150)
 
                 Text("\(pagesRead) de \(totalPages) páginas lidas")
@@ -54,7 +54,7 @@ struct ReadingProgressView: View {
                             x: .value("Dia", data.day),
                             y: .value("Páginas", data.pages)
                         )
-                        .foregroundStyle(Color.blue.gradient)
+                        .foregroundStyle(Color.darkBlue.gradient)
                     }
                 }
                 .frame(height: 200)

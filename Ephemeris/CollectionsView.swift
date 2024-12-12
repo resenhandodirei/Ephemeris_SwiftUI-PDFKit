@@ -31,10 +31,13 @@ struct CollectionsView: View {
                 if collections.isEmpty {
                     Text("Nenhuma coleção criada.")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
                 } else {
                     ScrollView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
+                        LazyVGrid(
+                            columns: [GridItem(.adaptive(minimum: 150), spacing: 20)],
+                            spacing: 20
+                        ) {
                             ForEach(collections) { collection in
                                 CollectionCardView(
                                     collection: collection,
@@ -48,10 +51,11 @@ struct CollectionsView: View {
                 }
             }
             .navigationTitle("Coleções")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: { showingAddCollectionModal = true }) {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus").foregroundColor(.darkBlue)
                     }
                 }
             }
@@ -102,7 +106,7 @@ struct CollectionCardView: View {
             HStack {
                 Button(action: onEdit) {
                     Image(systemName: "pencil")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.darkBlue)
                 }
                 .buttonStyle(BorderlessButtonStyle())
 
@@ -120,6 +124,7 @@ struct CollectionCardView: View {
         .background(Color(.systemGray6))
         .cornerRadius(12)
         .shadow(radius: 4)
+        .padding(.all, 4) // Espaçamento externo para afastar as caixas
     }
 }
 
@@ -135,11 +140,12 @@ struct AddCollectionView: View {
                 TextField("Nome da coleção", text: $collectionName)
             }
             .navigationTitle("Nova Coleção")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
                         dismiss()
-                    }
+                    }.foregroundColor(.darkBlue)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Adicionar") {
@@ -165,17 +171,18 @@ struct EditCollectionView: View {
                 TextField("Nome da coleção", text: $collection.title)
             }
             .navigationTitle("Editar Coleção")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
                         dismiss()
-                    }
+                    }.foregroundColor(.darkBlue)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Salvar") {
                         onEdit(collection)
                         dismiss()
-                    }
+                    }.foregroundColor(.darkBlue)
                     .disabled(collection.title.isEmpty)
                 }
             }
